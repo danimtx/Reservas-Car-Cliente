@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'sonner'
 
 const ReservationForm = ({ vehiculo }) => {
   const [cardNumber, setCardNumber] = useState('');
@@ -79,14 +80,14 @@ const ReservationForm = ({ vehiculo }) => {
       if (Disponible()) {
         const response = await axios.post('https://localhost:44309/api/Reservas', reservationData);
         if (response.status === 200) {
-          alert('Reserva realizada con éxito.');
+          toast.success('Reserva realizada con éxito.');
           navigate('/dashboard');  // Redirigir al dashboard después de la reserva exitosa
         }
       } else {
-        alert("Este vehiculo está agotado");
+        toast.error("Este vehiculo está agotado");
       }
     } catch (error) {
-      alert('Hubo un error al realizar la reserva.');
+      toast.error('Hubo un error al realizar la reserva.');
       console.error('Error al reservar:', error);
     }
   };
@@ -124,6 +125,7 @@ const ReservationForm = ({ vehiculo }) => {
           className={expiryValid ? 'valid' : 'invalid'} 
         />
       </label>
+      <Toaster position="top-center" richColors/>
       <button type="submit" disabled={!cardValid || !expiryValid}>
         Reservar
       </button>

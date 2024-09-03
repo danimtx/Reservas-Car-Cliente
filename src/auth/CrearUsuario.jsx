@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../assets/styles/CrearUsuario.css';
+import { Toaster, toast } from 'sonner'
+import { useNavigate } from "react-router-dom";
 
 const CrearUsuario = () => {
   const [usuario, setUsuario] = useState({
@@ -14,6 +16,7 @@ const CrearUsuario = () => {
     //Foto: ""  // Aquí almacenaremos la ruta de la foto
   });
 
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);  // Para manejar la foto seleccionada
 
   // Manejar los cambios en el formulario
@@ -65,10 +68,11 @@ const CrearUsuario = () => {
     try {
       // Enviar el usuario al backend
       await axios.post("https://localhost:44309/api/Usuarios", nuevoUsuario);
-      alert("Usuario creado correctamente.");
+      toast.success("Usuario creado correctamente.");
+      navigate("/login");
     } catch (error) {
       console.error("Error al crear el usuario:", error);
-      alert("Hubo un error al crear el usuario.");
+      toast.error("Hubo un error al crear el usuario.");
     }
   };
 
@@ -117,6 +121,7 @@ const CrearUsuario = () => {
               <input type="file" onChange={handleFileChange} required />
             </div>
           </div>
+          <Toaster position="top-center" richColors/>
           <button type="submit" className="crear-usuario-button">Crear Usuario</button>
         </form>
         <button className="switch-button" onClick={() => navigate("/login")}>Volver al Login</button>
