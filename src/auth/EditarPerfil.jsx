@@ -3,6 +3,7 @@ import { useAuth } from '../auth/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/EditarPerfil.css'; 
+import { Toaster, toast } from 'sonner'
 
 const EditarPerfil = () => {
   const { user, login } = useAuth(); 
@@ -53,11 +54,12 @@ const EditarPerfil = () => {
       if (response.status === 200) {
         // Actualizar el estado del usuario en el contexto de autenticación
         login({ ...user, ...updatedPerfil });
+        toast.success("Perfil actualizado correctamente")
         navigate("/ver-perfil"); // Redirigir de vuelta a ver perfil
       }
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
-      alert("Hubo un error al actualizar el perfil.");
+      toast.error("Hubo un error al actualizar el perfil.");
     }
   };
 
@@ -106,6 +108,7 @@ const EditarPerfil = () => {
             className="perfil-photo-preview" 
           />
         </div>
+        <Toaster position="top-center" richColors/>
         <div className="form-buttons">
           <button type="submit" className="guardar-cambios-button">Guardar Cambios</button>
           <button type="button" onClick={handleCancel} className="cancelar-button">Cancelar</button>
